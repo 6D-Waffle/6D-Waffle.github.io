@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GymRat — Workout Builder</title>
+<title>Pulse — Workout Builder</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -149,11 +149,128 @@ main{display:grid;grid-template-columns:320px 1fr;height:calc(100vh - 58px);over
 .cs-val{font-family:var(--display);font-size:2.5rem;color:var(--lime)}
 .cs-lbl{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:.2rem}
 
+/* MOBILE NAV TABS */
+.mobile-tabs{display:none}
+
 @media(max-width:700px){
-  main{grid-template-columns:1fr;grid-template-rows:auto 1fr}
-  .sidebar{max-height:45vh}
-  .builder-top{flex-direction:column;align-items:flex-start}
-  .stats-row{align-self:flex-start}
+  header{padding:0 1rem;height:50px}
+  .logo{font-size:1.5rem}
+  .header-tag{display:none}
+
+  /* stack layout vertically, leave room for bottom tabs */
+  .app{grid-template-rows:auto 1fr auto;height:100dvh;overflow:hidden}
+  main{
+    display:block;
+    height:100%;
+    overflow:hidden;
+    position:relative;
+  }
+
+  /* sidebar becomes a full panel, hidden by default */
+  .sidebar{
+    position:absolute;inset:0;
+    z-index:10;
+    display:none;
+    max-height:none;
+    height:100%;
+  }
+  .sidebar.tab-active{display:flex}
+
+  /* main panel also full panel */
+  .main-panel{
+    position:absolute;inset:0;
+    display:none;
+    height:100%;
+  }
+  .main-panel.tab-active{display:flex}
+
+  /* builder adjustments */
+  .builder-top{
+    flex-direction:column;
+    align-items:flex-start;
+    padding:1rem;
+    gap:.75rem;
+  }
+  .stats-row{
+    align-self:stretch;
+    justify-content:space-between;
+    gap:.5rem;
+  }
+  .stat-val{font-size:1.3rem}
+  .workout-name{font-size:1.4rem}
+
+  .routine-list{padding:.75rem 1rem}
+
+  .builder-bottom{
+    padding:.75rem 1rem;
+    flex-wrap:wrap;
+    gap:.5rem;
+  }
+  .builder-bottom > div[style]{
+    margin-left:0 !important;
+    width:100%;
+    justify-content:flex-start;
+  }
+  .start-btn{flex:1}
+  .clear-btn{flex:0 0 auto}
+
+  /* timer adjustments */
+  .timer-header{padding:.75rem 1rem;gap:.5rem}
+  .timer-workout-name{font-size:1rem}
+  .progress-text{font-size:11px;white-space:nowrap}
+  .back-btn{padding:.4rem .75rem;font-size:12px}
+
+  .timer-body{gap:1.25rem;padding:1rem .75rem}
+  .ex-current-name{font-size:2rem}
+  .timer-ring-wrap{width:160px;height:160px}
+  .timer-ring-wrap svg{width:160px;height:160px}
+  .timer-seconds{font-size:3rem}
+
+  .t-btn{padding:.55rem 1rem;font-size:12px}
+  .queue-strip{padding:.75rem 1rem}
+
+  /* complete screen */
+  .complete-view{padding:2rem 1.25rem;gap:1.5rem}
+  .complete-title{font-size:2.5rem}
+  .complete-stats{gap:1.5rem}
+  .cs-val{font-size:2rem}
+
+  /* BOTTOM TABS */
+  .mobile-tabs{
+    display:flex;
+    background:var(--surface);
+    border-top:1px solid var(--border);
+    height:56px;
+  }
+  .mob-tab{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    background:transparent;
+    border:none;
+    color:var(--muted);
+    font-size:10px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    cursor:pointer;
+    font-family:var(--sans);
+    transition:color .15s;
+    padding:0;
+  }
+  .mob-tab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .mob-tab.active{color:var(--lime)}
+
+  /* filter row scrollable */
+  .filter-row{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:.6rem 1rem}
+  .filter-row::-webkit-scrollbar{display:none}
+  .filter-btn{flex-shrink:0}
+
+  /* exercise cards */
+  .exercise-card{padding:.7rem .85rem}
+  .sidebar-header{padding:1rem 1rem .85rem}
 }
 </style>
 </head>
@@ -161,7 +278,7 @@ main{display:grid;grid-template-columns:320px 1fr;height:calc(100vh - 58px);over
 <div class="app">
 
 <header>
-  <div class="logo">GymRat</div>
+  <div class="logo">Pulse</div>
   <div class="header-right">
     <span class="header-tag">Workout Builder</span>
   </div>
@@ -288,6 +405,18 @@ main{display:grid;grid-template-columns:320px 1fr;height:calc(100vh - 58px);over
 
   </div>
 </main>
+
+<!-- MOBILE BOTTOM TABS -->
+<nav class="mobile-tabs" id="mobileTabs">
+  <button class="mob-tab" id="tabLibrary" data-tab="library">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Library
+  </button>
+  <button class="mob-tab active" id="tabBuilder" data-tab="builder">
+    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    Workout
+  </button>
+</nav>
 </div>
 
 <script>
@@ -518,10 +647,10 @@ function renderLibrary(){
     </div>
   `).join("");
   list.querySelectorAll(".add-btn").forEach(btn=>{
-    btn.addEventListener("click",ev=>{ev.stopPropagation();addExercise(parseInt(btn.dataset.id))});
+    btn.addEventListener("click",ev=>{ev.stopPropagation();window.addExercise(parseInt(btn.dataset.id))});
   });
   list.querySelectorAll(".exercise-card").forEach(card=>{
-    card.addEventListener("click",()=>addExercise(parseInt(card.dataset.id)));
+    card.addEventListener("click",()=>window.addExercise(parseInt(card.dataset.id)));
   });
 }
 
@@ -778,12 +907,45 @@ document.getElementById("restPlus").addEventListener("click",()=>{
   if(i < REST_STEPS.length-1){ timerState.restTime = REST_STEPS[i+1]; updateRestDisplay(); }
 });
 
+// Mobile tab switching
+function isMobile(){ return window.innerWidth <= 700; }
+function setMobileTab(tab){
+  const sidebar = document.querySelector('.sidebar');
+  const mainPanel = document.querySelector('.main-panel');
+  document.querySelectorAll('.mob-tab').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  if(!isMobile()) return;
+  sidebar.classList.toggle('tab-active', tab==='library');
+  mainPanel.classList.toggle('tab-active', tab==='builder');
+}
+function initLayout(){
+  const sidebar = document.querySelector('.sidebar');
+  const mainPanel = document.querySelector('.main-panel');
+  if(isMobile()){
+    sidebar.classList.remove('tab-active');
+    mainPanel.classList.add('tab-active');
+  } else {
+    sidebar.classList.remove('tab-active');
+    mainPanel.classList.remove('tab-active');
+  }
+}
+document.querySelectorAll('.mob-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>setMobileTab(btn.dataset.tab));
+});
+// After adding exercise on mobile, auto-switch to builder
+const _origAddExercise = addExercise;
+window.addExercise = function(id){
+  _origAddExercise(id);
+  if(isMobile()) setMobileTab('builder');
+};
+window.addEventListener('resize', initLayout);
+initLayout();
+
 buildFilters();
 renderLibrary();
 renderRoutine();
 </script>
 <footer style="background:var(--surface);border-top:1px solid var(--border);padding:.75rem 2rem;text-align:center;font-size:12px;color:var(--muted);letter-spacing:0.04em;">
-  2026 © John Cris A. Alviar
+  © John Cris A. Alviar
 </footer>
 </body>
 </html>
