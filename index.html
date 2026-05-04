@@ -312,6 +312,45 @@
     .hero-intro h1 { font-size: 1.35rem; }
     .sec-title { font-size: 1.25rem; }
   }
+
+  /* ── KANBAN MOCK PREVIEW ── */
+  .project-thumb {
+    width: 100%; background: #0d1117;
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    overflow: hidden;
+  }
+  .project-thumb-inner { pointer-events: none; user-select: none; }
+  .kanban-mock { font-family: "Inter", sans-serif; }
+  .kanban-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1rem; font-size: 0.82rem;
+  }
+  .kanban-title { font-weight: 700; color: var(--text); font-size: 0.9rem; }
+  .kanban-progress { font-size: 0.75rem; color: var(--muted); }
+  .kanban-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+  .kanban-col { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem; }
+  .kcol-label {
+    font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 0.5rem; padding: 2px 6px; border-radius: 4px; display: inline-block;
+  }
+  .kcol-label.todo  { background: rgba(245,158,11,0.12); color: var(--amber); }
+  .kcol-label.prog  { background: rgba(88,196,220,0.12); color: var(--cyan); }
+  .kcol-label.done  { background: rgba(61,220,132,0.12); color: var(--green); }
+  .ktask {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 6px 8px; font-size: 0.72rem;
+    color: var(--text-s); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 5px;
+  }
+  .ktask.active { border-color: rgba(88,196,220,0.35); color: var(--text); }
+  .ktask.done-task { opacity: 0.5; text-decoration: line-through; }
+  .kprio {
+    font-size: 0.62rem; font-weight: 700; padding: 1px 5px;
+    border-radius: 3px; text-transform: uppercase; flex-shrink: 0;
+  }
+  .kprio.high { background: rgba(239,68,68,0.15); color: #f87171; }
+  .kprio.med  { background: rgba(245,158,11,0.15); color: var(--amber); }
+  .kprio.low  { background: rgba(61,220,132,0.12); color: var(--green); }
 </style>
 </head>
 <body>
@@ -319,7 +358,7 @@
 <!-- NAV -->
 <nav>
   <div class="inner">
-    <a class="nav-logo" href="#">John Cris<span>.dev</span></a>
+    <a class="nav-logo" href="#">John<span>.</span></a>
     <div class="nav-links">
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
@@ -346,7 +385,7 @@
 <!-- HERO -->
 <div class="hero container">
   <div class="hero-top">
-    <img class="avatar" src="https://scontent.fmnl13-2.fna.fbcdn.net/v/t39.30808-6/677655305_4383989271919042_8909547489600025641_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeG_NJELNdFeQK4MZTeH_SCKz5FShA0T9CXPkVKEDRP0JVMEineMsZw3U738N6OjrtjFhaj0dyR02x3o3nof3sak&_nc_ohc=b-ta1G7DuBUQ7kNvwGzMYqO&_nc_oc=AdqIuOqj8ZMyVuZZTdQ5H1ngBuDwCPpCkAyPeDIw36XExDOBOnhVWgiuowaA38T3hyV2d_S68Y-d4wToiPg3RVTy&_nc_zt=23&_nc_ht=scontent.fmnl13-2.fna&_nc_gid=DQEYpZkfEYP2N1wVJQuJ6g&_nc_ss=7b2a8&oh=00_Af3KRcH5c9h-603CePSHrW45bp6uqn4POguT12PepmKOKg&oe=69F96DFA" alt="John Cris" onerror="this.outerHTML='<div class=&quot;avatar&quot;></div>'">
+    <img class="avatar" src="https://scontent.fmnl13-2.fna.fbcdn.net/v/t39.30808-6/677655305_4383989271919042_8909547489600025641_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeG_NJELNdFeQK4MZTeH_SCKz5FShA0T9CXPkVKEDRP0JVMEineMsZw3U738N6OjrtjFhaj0dyR02x3o3nof3sak&_nc_ohc=b-ta1G7DuBUQ7kNvwGzMYqO&_nc_oc=AdqIuOqj8ZMyVuZZTdQ5H1ngBuDwCPpCkAyPeDIw36XExDOBOnhVWgiuowaA38T3hyV2d_S68Y-d4wToiPg3RVTy&_nc_zt=23&_nc_ht=scontent.fmnl13-2.fna&_nc_gid=EtrRT6FrO3GhzcSX4ChNhA&_nc_ss=7b2a8&oh=00_Af1XCi2R_sLgV8YRg7ggZRdLZmARyB-MW9kd5az-0yKQ&oe=69F96DFA" alt="John Cris" onerror="this.outerHTML='<div class=&quot;avatar&quot;>JC</div>'">
     <div class="hero-intro">
       <h1>Hey, I'm <span>John Cris</span> 👋</h1>
       <div class="subtitle">Web Developer · Entry Level · Calabarzon, PH</div>
@@ -472,6 +511,56 @@
           <div class="project-actions">
             <a href="pulse-fitness.html" target="_blank" class="btn btn-green">Open project ↗</a>
             <button class="btn-expand" onclick="openModal('pulse-fitness.html', 'Pulse Fitness')">⛶ Full screen</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TASKFLOW -->
+      <div class="project-card">
+        <div class="project-thumb">
+          <div class="project-thumb-inner">
+            <div class="kanban-mock">
+              <div class="kanban-header">
+                <span class="kanban-title">📋 TaskFlow</span>
+                <span class="kanban-progress">4 / 6 done &nbsp;·&nbsp; <span style="color:#3ddc84">67%</span></span>
+              </div>
+              <div class="kanban-cols">
+                <div class="kanban-col">
+                  <div class="kcol-label todo">Todo</div>
+                  <div class="ktask"><span class="kprio high">High</span>Set up auth</div>
+                  <div class="ktask"><span class="kprio med">Med</span>Write tests</div>
+                </div>
+                <div class="kanban-col">
+                  <div class="kcol-label prog">In Progress</div>
+                  <div class="ktask active"><span class="kprio high">High</span>Build API routes</div>
+                </div>
+                <div class="kanban-col">
+                  <div class="kcol-label done">Done</div>
+                  <div class="ktask done-task"><span class="kprio low">Low</span>Init project ✓</div>
+                  <div class="ktask done-task"><span class="kprio med">Med</span>Design UI ✓</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-num">02 /</span>
+            <span class="project-badge">Fullstack</span>
+            <span class="project-badge" style="background:rgba(88,196,220,0.12);color:#58c4dc;border-color:rgba(88,196,220,0.3);">Next.js</span>
+          </div>
+          <h3>TaskFlow 📋</h3>
+          <p>A fullstack Kanban board with a REST API, file-based persistence, priority filters, overdue detection, and a live progress bar. Built to show off real fullstack skills.</p>
+          <div class="project-chips">
+            <span class="chip c">Next.js 14</span>
+            <span class="chip g">Node.js</span>
+            <span class="chip g">REST API</span>
+            <span class="chip">JSON DB</span>
+            <span class="chip p">React</span>
+          </div>
+          <div class="project-actions">
+            <a href="https://github.com/6D-Waffle" target="_blank" class="btn btn-green">View on GitHub ↗</a>
           </div>
         </div>
       </div>
